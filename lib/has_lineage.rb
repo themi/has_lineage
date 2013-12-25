@@ -1,5 +1,5 @@
-require "has_lineage/version"
+require "has_lineage/has_lineage"
 
-module HasLineage
-  # Your code goes here...
+class ActiveRecord::Base
+	include HasLineage::HasLineage
 end
