@@ -1,7 +1,7 @@
 require 'active_record'
 
-class ActiveRecord::Base
-	include HasLineage
+class Post < ActiveRecord::Base
+  include HasLineage
 end
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
@@ -16,6 +16,8 @@ def setup_db
     create_table :posts, force: true do |t|
       t.column :name, :string
       t.column :parent_id, :integer
+      t.column :lineage, :string
+      t.column :branch_id, :integer
     end
   end
 end
@@ -25,3 +27,4 @@ def teardown_db
     ActiveRecord::Base.connection.drop_table(table)
   end
 end
+

@@ -20,28 +20,28 @@ module HasLineage
     end
 
     def self_and_siblings
-      parent ? parent.children.order_by : self.class.roots.filter_by(tree_branch_id).order_by
+      lineage_parent ? lineage_parent.lineage_children.order_by : self.class.roots.lineage_filter(tree_branch_id).order_by
     end
 
     def children?
-      children.size > 0
+      lineage_children.size > 0
     end
 
     def parent?
-      parent.present?
+      lineage_parent.present?
     end
 
     def reset_tree(prefix = lineage_path)
-      children.filter_by(tree_branch_id).order_by(false).each_with_index do |sibling, index|
+      lineage_children.lineage_filter(tree_branch_id).order_by(false).each_with_index do |sibling, index|
         sibling.lineage_path = self.class.new_lineage_path(prefix, index)
         sibling.reset_tree if children?
       end
     end
 
     def reset_my_tree
-      if parent.present?
-        parent.children.filter_by(tree_branch_id).order_by(false).each_with_index do |sibling, index|
-          sibling.lineage_path = self.class.new_lineage_path(parent.lineage_path, index)
+      if lineage_parent.present?
+        lineage_parent.lineage_children.lineage_filter(tree_branch_id).order_by(false).each_with_index do |sibling, index|
+          sibling.lineage_path = self.class.new_lineage_path(lineage_parent.lineage_path, index)
           sibling.reset_tree if children?
         end
       else

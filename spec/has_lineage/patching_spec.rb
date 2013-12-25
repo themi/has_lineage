@@ -2,6 +2,8 @@ require 'spec_helper'
 
 class SampleClass
 	include HasLineage
+	def self.belongs_to(*args); end
+	def self.has_many(*args); end
 end
 
 describe SampleClass do

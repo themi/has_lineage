@@ -18,6 +18,8 @@ module HasLineage
               :order => nil, 
               :counter_cache => false }.update(options)
 
+      belongs_to :lineage_parent, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :counter_cache => has_lineage_options[:counter_cache]
+      has_many :lineage_children, -> { order(%Q[#{has_lineage_options[:order]}]) }, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :dependent => :destroy
     end
 
     def roots
