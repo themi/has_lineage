@@ -33,7 +33,7 @@ module HasLineage
 
     def descendants_of(value)
       if value.present?
-        where("#{has_lineage_options[:lineage_column]} LIKE ?", value + "%")
+        where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{value}%")
       else
         all
       end
@@ -44,12 +44,12 @@ module HasLineage
       where("#{has_lineage_options[:lineage_column]} IN (?)", value.split("#{has_lineage_options[:delimiter]}"))
     end
 
-    def lineage_order(sort_lineage = true)
-      if sort_lineage
-        order(%Q{#{has_lineage_options[:lineage_column]}})
-      else
-        order(%Q{#{has_lineage_options[:order]}})
-      end
+    def presort_order
+      order(%Q{#{has_lineage_options[:order]}})
+    end
+
+    def lineage_order
+      order(%Q{#{has_lineage_options[:lineage_column]}})
     end
 
     def lineage_filter(branch_id = nil)
@@ -66,7 +66,7 @@ module HasLineage
 
     def reset_lineage_tree(tree_branch_id = nil, &block)
       yield if block
-      roots.lineage_filter(tree_branch_id).lineage_order(false).each_with_index do |sibling, index|
+      roots.lineage_filter(tree_branch_id).presort_order.each_with_index do |sibling, index|
         sibling.lineage_path = new_lineage_path(nil, index)
         sibling.reset_tree if sibling.children?
       end
