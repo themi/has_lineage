@@ -20,7 +20,7 @@ module HasLineage
     end
 
     def self_and_siblings
-      lineage_parent ? lineage_parent.lineage_children.order_by : self.class.roots.lineage_filter(tree_branch_id).order_by
+      lineage_parent ? lineage_parent.lineage_children.lineage_order : self.class.roots.lineage_filter(tree_branch_id).lineage_order
     end
 
     def children?
@@ -32,7 +32,7 @@ module HasLineage
     end
 
     def reset_tree(prefix = lineage_path)
-      lineage_children.lineage_filter(tree_branch_id).order_by(false).each_with_index do |sibling, index|
+      lineage_children.lineage_filter(tree_branch_id).presort_order.each_with_index do |sibling, index|
         sibling.lineage_path = self.class.new_lineage_path(prefix, index)
         sibling.reset_tree if children?
       end
@@ -40,7 +40,7 @@ module HasLineage
 
     def reset_my_tree
       if lineage_parent.present?
-        lineage_parent.lineage_children.lineage_filter(tree_branch_id).order_by(false).each_with_index do |sibling, index|
+        lineage_parent.lineage_children.lineage_filter(tree_branch_id).presort_order.each_with_index do |sibling, index|
           sibling.lineage_path = self.class.new_lineage_path(lineage_parent.lineage_path, index)
           sibling.reset_tree if children?
         end
