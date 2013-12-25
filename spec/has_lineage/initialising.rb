@@ -1,14 +1,19 @@
 require 'spec_helper'
 
-class SomeClass
+class SampleClass
 	include HasLineage
 end
 
-describe "HasLineage", "instantiation" do
-  subject { SomeClass.new }
+describe SampleClass do
 
-  it 'has something to' do
-  	subject.should respond_to(:nothing)
-  end
+	it { should respond_to(:has_lineage) }
+
+	context "methods" do
+	  subject { SomeClass.new }
+
+	  it 'has something to' do
+	  	subject.should respond_to(:nothing)
+	  end
+	end
 
 end
