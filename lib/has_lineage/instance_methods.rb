@@ -1,8 +1,7 @@
 module HasLineage
-  module InstanceMethods
+  module LineageInstanceMethods
 
-    def nothing
-      'nothing'
+    def root
     end
 
   end

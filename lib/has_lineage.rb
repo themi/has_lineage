@@ -1,14 +1,18 @@
 require "has_lineage/class_methods"
 require "has_lineage/instance_methods"
+require "active_support/concern"
+require "active_support/core_ext/class/attribute_accessors"
 
 module HasLineage
-  def self.included(base)
-    base.class_eval do
-      cattr_accessor :has_lineage_options
-    end
+	extend ActiveSupport::Concern
 
-    base.extend(ClassMethods)
-
-    include InstanceMethods
+  included do
+    cattr_accessor :has_lineage_options
   end
+
+  module ClassMethods
+	  include LineageClassMethods
+  end
+
+  include LineageInstanceMethods
 end
