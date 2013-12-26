@@ -41,8 +41,11 @@ module HasLineage
     def reset_my_tree
       if lineage_parent.present?
         lineage_parent.lineage_children.lineage_filter(tree_branch_id).presort_order.each_with_index do |sibling, index|
-          sibling.lineage_path = self.class.new_lineage_path(lineage_parent.lineage_path, index)
-          sibling.reset_tree if children?
+          path = self.class.new_lineage_path(lineage_parent.lineage_path, index)
+          unless path == sibling.lineage_path
+            sibling.lineage_path = path
+            sibling.reset_tree if children?
+          end
         end
       else
         self.class.reset_lineage_tree

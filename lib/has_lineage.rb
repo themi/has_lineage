@@ -4,14 +4,14 @@ require "active_support/concern"
 require "active_support/core_ext/class/attribute_accessors"
 
 module HasLineage
-	extend ActiveSupport::Concern
+  extend ActiveSupport::Concern
 
   included do
     cattr_accessor :has_lineage_options
   end
 
   module ClassMethods
-	  include LineageClassMethods
+    include LineageClassMethods
   end
 
   include LineageInstanceMethods
