@@ -22,26 +22,27 @@ module HasLineage
       has_many :lineage_children, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :dependent => :destroy
     end
 
-    def roots
-      where("#{has_lineage_options[:parent_key]} IS NULL")
+    def roots(branch_id = nil)
+      lineage_filter(branch_id).where("#{has_lineage_options[:parent_key]} IS NULL")
     end
 
-    def root_for(value)
-      return nil unless value.present?
-      where("#{has_lineage_options[:lineage_column]} = ?", value.split("#{has_lineage_options[:delimiter]}")[0])
+    def root_for(path, branch_id = nil)
+      return nil unless path.present?
+      root_index = array_from(path)[0].to_i
+      lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} = ?", path_pattern(root_index)).first
     end
 
-    def descendants_of(value)
+    def descendants_of(value, branch_id = nil)
       if value.present?
-        where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{value}%")
+        lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{value}%")
       else
-        all
+        lineage_filter(branch_id)
       end
     end
 
-    def ancestors_for(value)
+    def ancestors_for(value, branch_id = nil)
       return [] unless value.present?
-      where("#{has_lineage_options[:lineage_column]} IN (?)", value.split("#{has_lineage_options[:delimiter]}"))
+      lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} IN (?)", value.split("#{has_lineage_options[:delimiter]}"))
     end
 
     def presort_order
@@ -61,15 +62,27 @@ module HasLineage
     end
 
     def new_lineage_path(prefix, raw_index)
-      prefix.to_s + "#{has_lineage_options[:delimiter]}%0#{has_lineage_options[:leaf_width]}d" % (raw_index + 1)
+      prefix.to_s + path_pattern(raw_index+1) 
     end
 
-    def reset_lineage_tree(tree_branch_id = nil, &block)
+    def reset_lineage_tree(branch_id = nil, &block)
       yield if block
-      roots.lineage_filter(tree_branch_id).presort_order.each_with_index do |sibling, index|
+      roots(branch_id).presort_order.each_with_index do |sibling, index|
         sibling.lineage_path = new_lineage_path(nil, index)
         sibling.reset_tree if sibling.children?
       end
+    end
+
+    # =====
+    private
+    # =====
+
+    def array_from(value)
+      value.split("#{has_lineage_options[:delimiter]}").reject { |a| a.empty? }
+    end
+
+    def path_pattern(index)
+      "#{has_lineage_options[:delimiter]}%0#{has_lineage_options[:leaf_width]}d" % index
     end
 
   end

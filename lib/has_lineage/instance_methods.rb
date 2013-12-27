@@ -1,18 +1,18 @@
 module HasLineage
   module LineageInstanceMethods
 
+    def root
+      self.class.root_for(lineage_path, tree_branch_id)
+    end
+
     def ancestors
-      self.class.ancestors_for(lineage_path).order_by - [self]
+      self.class.ancestors_for(lineage_path, tree_branch_id).order_by - [self]
     end
 
     def descendants(exclude_self = true)
-      results = self.class.descendants_of(lineage_path).order_by
+      results = self.class.descendants_of(lineage_path, tree_branch_id).order_by
       results = results.where("id != ?", id) if exclude_self
       results
-    end
-
-    def root
-      self.class.root_for(lineage_path)
     end
 
     def siblings
@@ -20,11 +20,15 @@ module HasLineage
     end
 
     def self_and_siblings
-      lineage_parent ? lineage_parent.lineage_children.lineage_order : self.class.roots.lineage_filter(tree_branch_id).lineage_order
+      (lineage_parent ? lineage_parent.lineage_children : self.class.roots).lineage_filter(tree_branch_id).lineage_order
     end
 
     def children?
       lineage_children.size > 0
+    end
+
+    def children
+      lineage_children
     end
 
     def parent?

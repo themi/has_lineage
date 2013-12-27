@@ -63,18 +63,17 @@ describe Post, "Class methods" do
 
   describe "#new_lineage_path" do
     before { described_class.has_lineage }
-    subject { described_class.new_lineage_path(prefix, index) }
 
     context "with no prefix and index=0" do
       let(:prefix)   { nil }
       let(:index)   { 0 }
-      it { subject.should == '/0001' }
+      it { expect(described_class.new_lineage_path(prefix, index)).to eq('/0001') }
     end
 
     context "with prefix=PREFIX and index=2" do
       let(:prefix)   { "PREFIX" }
       let(:index)   { 2 }
-      it { subject.should == 'PREFIX/0003' }
+      it { expect(described_class.new_lineage_path(prefix, index)).to eq('PREFIX/0003') }
     end
   end
 

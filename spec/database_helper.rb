@@ -18,6 +18,7 @@ def setup_db
       t.column :parent_id, :integer
       t.column :lineage, :string
       t.column :branch_id, :integer
+      t.column :lineage_children_count, :integer
     end
   end
 
