@@ -31,3 +31,18 @@ def teardown_db
   end
 end
 
+def seed_basic_tree(branch_id)
+  harry = Post.create(:name => "Harry_#{branch_id}", branch_id: branch_id)
+  mary = Post.create(:name => "Mary_#{branch_id}", branch_id: branch_id)
+  john = Post.create(:name => "John_#{branch_id}", branch_id: branch_id)
+  larry = Post.create(:name => "Larry_#{branch_id}", branch_id: branch_id)
+  gina = Post.create(:name => "Gina_#{branch_id}", branch_id: branch_id)
+  Post.reset_lineage_tree do
+    harry.lineage_children << mary
+    harry.lineage_children << john
+    john.lineage_children << larry
+    john.lineage_children << gina
+  end
+  { harry: harry, mary: mary, john: john, larry: larry, gina: gina }
+end
+

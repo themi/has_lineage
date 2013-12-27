@@ -28,21 +28,21 @@ module HasLineage
 
     def root_for(path, branch_id = nil)
       return nil unless path.present?
-      root_index = array_from(path)[0].to_i
+      root_index = array_for(path)[0].to_i
       lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} = ?", path_pattern(root_index)).first
     end
 
-    def descendants_of(value, branch_id = nil)
-      if value.present?
-        lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{value}%")
+    def ancestors_for(path, branch_id = nil)
+      return [] unless path.present?
+      lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} IN (?)", progressive_array_for(path))
+    end
+
+    def descendants_of(path, branch_id = nil)
+      if path.present?
+        lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{path}%")
       else
         lineage_filter(branch_id)
       end
-    end
-
-    def ancestors_for(value, branch_id = nil)
-      return [] unless value.present?
-      lineage_filter(branch_id).where("#{has_lineage_options[:lineage_column]} IN (?)", value.split("#{has_lineage_options[:delimiter]}"))
     end
 
     def presort_order
@@ -69,7 +69,7 @@ module HasLineage
       yield if block
       roots(branch_id).presort_order.each_with_index do |sibling, index|
         sibling.lineage_path = new_lineage_path(nil, index)
-        sibling.reset_tree if sibling.children?
+        sibling.update_children_recursive if sibling.children?
       end
     end
 
@@ -77,12 +77,23 @@ module HasLineage
     private
     # =====
 
-    def array_from(value)
+    def array_for(value)
       value.split("#{has_lineage_options[:delimiter]}").reject { |a| a.empty? }
     end
 
     def path_pattern(index)
       "#{has_lineage_options[:delimiter]}%0#{has_lineage_options[:leaf_width]}d" % index
+    end
+
+    def progressive_array_for(path)
+      arr = array_for(path)
+      result = []
+      new_path = ""
+      arr.each_with_index do |a, index|
+        new_path << path_pattern(a.to_i)
+        result << new_path.clone
+      end
+      result
     end
 
   end
