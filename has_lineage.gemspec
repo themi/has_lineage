@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "has_lineage"
   spec.version       = HasLineage::VERSION
   spec.authors       = ["Tim Hemi"]
-  spec.email         = ["tim@reinteractive.net"]
-  spec.description   = "Lineage is a hybrid hierarchy data storage pattern"
-  spec.summary       = "Lineage uses Nested Sets and Materialised Path for optumim hierarchical SQL query methods"
-  spec.homepage      = ""
+  spec.email         = ["tim@hemi.co.nz"]
+  spec.description   = "Lineage is a hybrid SQL hierachy model"
+  spec.summary       = "Lineage is a SQL hierachy model/pattern using Adjacency and Materialised Path"
+  spec.homepage      = "https://github.com/themi/has_lineage"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
