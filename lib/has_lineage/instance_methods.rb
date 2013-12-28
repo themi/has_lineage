@@ -52,17 +52,42 @@ module HasLineage
       update_column(has_lineage_options[:lineage_column].to_sym, value)
     end
 
+    def parent_key_changed?
+      send("#{has_lineage_options[:parent_key]}_changed?")
+    end
+
     def reset_lineage_tree
       self.class.reset_lineage_tree(branch_id)
     end
+
+    def move_to(dest_parent)
+      raise MoveException.new("Cannot move root node!") unless parent?
+      raise MoveException.new("Cannot move to another tree!") if tree_branch_id != dest_parent.tree_branch_id
+      raise MoveException.new("Cannot move to a descendant node!") if dest_parent.lineage_path.starts_with?(lineage_path)
+      old_parent = lineage_parent
+      update_attributes(lineage_parent: dest_parent)
+      old_parent.update_children_recursive
+      dest_parent.update_children_recursive
+    end
+
+    # =====
+    protected
+    # =====
+
+      def tree_branch_id
+        send(has_lineage_options[:branch_key]) if has_lineage_options[:branch_key].present?
+      end
 
     # =====
     private
     # =====
 
-    def tree_branch_id
-      send(has_lineage_options[:branch_key]) if has_lineage_options[:branch_key].present?
-    end
+      def update_descendants_with_new_parent
+        if parent_key_changed? && !new_record? && !_pending_tree_refresh
+          lineage_parent.update_children_recursive
+        end
+        true
+      end
 
   end
 end

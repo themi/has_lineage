@@ -4,6 +4,7 @@ class SampleClass
   include HasLineage
   def self.belongs_to(*args); end
   def self.has_many(*args); end
+  def self.before_save(*args); end
 end
 
 describe SampleClass, "patching" do

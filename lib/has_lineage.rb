@@ -1,3 +1,4 @@
+require "has_lineage/exception"
 require "has_lineage/class_methods"
 require "has_lineage/instance_methods"
 require "active_support/concern"
@@ -7,7 +8,7 @@ module HasLineage
   extend ActiveSupport::Concern
 
   included do
-    cattr_accessor :has_lineage_options
+    cattr_accessor :has_lineage_options, :_pending_tree_refresh
   end
 
   module ClassMethods
