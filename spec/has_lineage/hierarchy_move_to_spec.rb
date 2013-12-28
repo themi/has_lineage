@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'database_helper'
 
 describe Post, "#move_to" do
-  before { setup_db; Post.has_lineage({branch_key: 'branch_id'})  }
+  before { setup_db; Post.has_lineage({branch_key: 'branch_id', order: :name})  }
   after  { teardown_db }
 
   context "with hierarchy tree" do
@@ -30,13 +30,12 @@ describe Post, "#move_to" do
     end
 
     it "with acceptable branch node updates the paths" do
-      expect( @b1[:mary].lineage_path ).to eq("/0001/0001")
-      @b1[:mary].move_to(@b1[:john])
-      @b1[:mary].reload
-      expect( @b1[:mary].lineage_path ).to eq("/0001/0002/0001")
+      expect( @b1[:jane].lineage_path ).to eq("/0001/0001")
+      expect( @b1[:john].lineage_path ).to eq("/0001/0002")
+      @b1[:jane].move_to(@b1[:john])
+      @b1[:jane].reload
+      expect( @b1[:jane].lineage_path ).to eq("/0001/0002/0002")
     end
-
-    it "informs developer to use #move_to"
 
   end
 

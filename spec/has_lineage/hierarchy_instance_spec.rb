@@ -70,7 +70,7 @@ describe Post, "Hierachy instance methods" do
       expect(@b1[:harry].siblings).to include(@b3[:harry])
       expect(@b1[:gina].siblings.count).to eq(1)
       expect(@b1[:gina].siblings).to include(@b1[:larry])
-      expect(@b1[:mary].siblings.count).to eq(1)
+      expect(@b1[:mary].siblings.count).to eq(2)
       expect(@b1[:mary].siblings).to include(@b1[:john])
       expect(paul.siblings).to be_empty
     end
