@@ -2,7 +2,12 @@ Description:
     Explain the generator
 
 Example:
-    rails generate has_lineage Thing
+  rails generate has_lineage:migration
 
-    This will create:
-        what/will/it/create
+  This will create:
+    db/migration/add_has_lineage_fields_to_#########.rb
+
+  Once created you will need to modify further depending on your requirements
+    if you already have a field that refers to parent object then remove the parent_id line 
+    if you donot whish to use the branch option then remove the branch_id line else rename accordingly
+    if you donot require counter caching then remove the lineage_children_count line
