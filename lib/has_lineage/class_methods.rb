@@ -18,8 +18,6 @@ module HasLineage
               :order => nil, 
               :counter_cache => false }.update(options)
 
-      self._pending_tree_refresh = false
-
       belongs_to :lineage_parent, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :counter_cache => has_lineage_options[:counter_cache]
       has_many :lineage_children, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :dependent => :destroy
     end
@@ -68,9 +66,7 @@ module HasLineage
     end
 
     def reset_lineage_tree(branch_id = nil, &block)
-      _pending_tree_refresh = true
       yield if block_given?
-      _pending_tree_refresh = false
       roots(branch_id).presort_order.each_with_index do |sibling, index|
         sibling.lineage_path = new_lineage_path(nil, index)
         sibling.update_children_recursive if sibling.children?

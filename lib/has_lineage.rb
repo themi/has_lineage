@@ -8,7 +8,7 @@ module HasLineage
   extend ActiveSupport::Concern
 
   included do
-    cattr_accessor :has_lineage_options, :_pending_tree_refresh
+    cattr_accessor :has_lineage_options
   end
 
   module ClassMethods
