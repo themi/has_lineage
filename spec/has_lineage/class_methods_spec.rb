@@ -8,7 +8,7 @@ describe Post, "Class methods" do
   describe "#has_lineage" do
     context "with a non-Hash argument" do
       let(:options) { ['parent_key'] }
-      it "raises a RuntimeError" do
+      it "raises a GeneralException" do
         expect{ described_class.has_lineage(options) }.to raise_error(HasLineage::GeneralException, "Options for has_lineage must be in a hash.")
       end
     end

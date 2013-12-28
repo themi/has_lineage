@@ -1,12 +1,12 @@
 require 'spec_helper'
 require 'database_helper'
 
-describe Post, "Hierachy" do
+describe Post, ".lineage_path" do
 
   before { setup_db; Post.has_lineage({branch_key: 'branch_id'})  }
   after  { teardown_db }
 
-  context "with complex hierarchy tree" do
+  context "with multiple hierarchy trees" do
     before do
       @b1 = seed_basic_tree(1)
       @b1.each { |k, v| v.reload }
@@ -16,7 +16,7 @@ describe Post, "Hierachy" do
       @b3.each { |k, v| v.reload }
     end
 
-    it "sets correct lineage path for first branch" do
+    it "sets correct lineage path for first tree" do
       expect(@b1[:harry].lineage_path).to eq("/0001") 
       expect(@b1[:mary].lineage_path).to eq("/0001/0001")
       expect(@b1[:john].lineage_path).to eq("/0001/0002")
@@ -24,7 +24,7 @@ describe Post, "Hierachy" do
       expect(@b1[:gina].lineage_path).to eq("/0001/0002/0002")
     end
 
-    it "sets correct lineage path for second branch" do
+    it "sets correct lineage path for second tree" do
       expect(@b2[:harry].lineage_path).to eq("/0002") 
       expect(@b2[:mary].lineage_path).to eq("/0002/0001")
       expect(@b2[:john].lineage_path).to eq("/0002/0002")
@@ -32,7 +32,7 @@ describe Post, "Hierachy" do
       expect(@b2[:gina].lineage_path).to eq("/0002/0002/0002")
     end
 
-    it "sets correct lineage path for third branch" do
+    it "sets correct lineage path for third tree" do
       expect(@b3[:harry].lineage_path).to eq("/0003") 
       expect(@b3[:mary].lineage_path).to eq("/0003/0001")
       expect(@b3[:john].lineage_path).to eq("/0003/0002")
