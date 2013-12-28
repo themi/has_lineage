@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Has lineage by themi</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Has lineage</h1>
+        <p>Hybrid hierarchy - Adjacency and Materialised Path </p>
+
+        <p class="view"><a href="https://github.com/themi/has_lineage">View the Project on GitHub <small>themi/has_lineage</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/themi/has_lineage/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/themi/has_lineage/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/themi/has_lineage">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="haslineage" class="anchor" href="#haslineage"><span class="octicon octicon-link"></span></a>HasLineage</h1>
+
+<p>A gem to manage hierarchical data.  This gem uses the Adjacency pattern to form the relationship and Materialised Path pattern for lookup.</p>
+
+<p>I used this project as a training exercise to create a gem for a Rails project.  As a training project, it is not full featured and currently is not my intention to make it so. Though as its creator I will keep an open communication line to this project - contact me with your feedback.</p>
+
+<p>The strategies I selected were from a an earlier project (15years ago) that appeared to me as being efficient.  The reason Materialised Path is fast for <em>lookup</em> is that it uses an ordered btree index on the records ancestry line.</p>
+
+<p>So whats the best? Well in researching this subject I have found the following startegies for handling hierarchical data:</p>
+
+<h4>
+<a name="adjacency-list" class="anchor" href="#adjacency-list"><span class="octicon octicon-link"></span></a>Adjacency List</h4>
+
+<ul>
+<li>Each record has a key to its immediate parent.</li>
+</ul><h4>
+<a name="materialised-path--path-enumeration" class="anchor" href="#materialised-path--path-enumeration"><span class="octicon octicon-link"></span></a>Materialised Path / Path Enumeration</h4>
+
+<ul>
+<li>Each record has a field containing complete line of its ancestry all the way up to the root.</li>
+</ul><h4>
+<a name="nested-sets" class="anchor" href="#nested-sets"><span class="octicon octicon-link"></span></a>Nested Sets.</h4>
+
+<ul>
+<li>Each record has keys to the record immediatly left and right of its position the hierarchical chain.</li>
+</ul><h4>
+<a name="closure-table" class="anchor" href="#closure-table"><span class="octicon octicon-link"></span></a>Closure Table</h4>
+
+<ul>
+<li>The complete line of its ancestry all the way up to the root is maintained as separate records in a separate table.</li>
+</ul><h2>
+<a name="how-do-they-stack-up-against-each-other" class="anchor" href="#how-do-they-stack-up-against-each-other"><span class="octicon octicon-link"></span></a>How do they stack up against each other</h2>
+
+<p>Plenty of smarter people than I have already done this - take a look:</p>
+
+<ul>
+<li><a href="http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html">Taxonomic Trees in PostgreSQL</a></li>
+<li><a href="http://www.slideshare.net/billkarwin/models-for-hierarchical-data">Models for hierarchical data by Bill Karwin</a></li>
+<li><a href="http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures">Trees In The Database - Advanced data structures by Lorenzo Alberton</a></li>
+</ul><h2>
+<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h2>
+
+<p>Each one has its own particular strengths and your choice should be guided by how you are using your data/tree.  Me, I am leaning toward Closure Table as it separates the admin from the actual data file and sets you up to take advantage an ordered btree index (like Materialised Path does).</p>
+
+<h2>
+<a name="other-gems" class="anchor" href="#other-gems"><span class="octicon octicon-link"></span></a>Other gems</h2>
+
+<p>If there are others that I havent listed here please let me know and I'll add them.</p>
+
+<ul>
+<li><a href="https://github.com/stefankroes/ancestry">Ancestry</a></li>
+<li><a href="https://github.com/RISCfuture/hierarchy">Use PostgreSQL LTREE type with ActiveRecord</a></li>
+<li><a href="https://github.com/mceachen/closure_tree">Closure Tree</a></li>
+<li><a href="https://github.com/kristianmandrup/acts_as_tree_rails3">Acts as tree for Rails 3</a></li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'has_lineage'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install has_lineage
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a name="run-migration" class="anchor" href="#run-migration"><span class="octicon octicon-link"></span></a>Run migration</h4>
+
+<div class="highlight highlight-bash"><pre>rails generate has_lineage:migration Post
+</pre></div>
+
+<p>adjust the migration file as required, then...</p>
+
+<div class="highlight highlight-bash"><pre>rake db:migrate
+</pre></div>
+
+<h4>
+<a name="add-to-your-model" class="anchor" href="#add-to-your-model"><span class="octicon octicon-link"></span></a>Add to your model</h4>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="kp">include</span> <span class="no">HasLineage</span>
+  <span class="n">has_lineage</span>
+<span class="k">end</span>
+
+</pre></div>
+
+<h4>
+<a name="setup-your-tree" class="anchor" href="#setup-your-tree"><span class="octicon octicon-link"></span></a>Setup your tree</h4>
+
+<div class="highlight highlight-ruby"><pre><span class="n">harry</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"Harry"</span><span class="p">)</span>
+<span class="n">mary</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"Mary"</span><span class="p">)</span>
+<span class="n">john</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"John"</span><span class="p">)</span>
+<span class="n">jane</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"Jane"</span><span class="p">)</span>
+<span class="n">larry</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"Larry"</span><span class="p">)</span>
+<span class="n">gina</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"Gina"</span><span class="p">)</span>
+<span class="no">Post</span><span class="o">.</span><span class="n">reset_lineage_tree</span> <span class="k">do</span>
+  <span class="n">harry</span><span class="o">.</span><span class="n">children</span> <span class="o">&lt;&lt;</span> <span class="n">mary</span>
+  <span class="n">harry</span><span class="o">.</span><span class="n">children</span> <span class="o">&lt;&lt;</span> <span class="n">john</span>
+  <span class="n">harry</span><span class="o">.</span><span class="n">children</span> <span class="o">&lt;&lt;</span> <span class="n">jane</span>
+  <span class="n">john</span><span class="o">.</span><span class="n">children</span> <span class="o">&lt;&lt;</span> <span class="n">larry</span>
+  <span class="n">john</span><span class="o">.</span><span class="n">children</span> <span class="o">&lt;&lt;</span> <span class="n">gina</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>I have not included call_backs to update tree automatically, as maintaining indexes on the lineage path column can be expensive.  Updating the tree should a be a process on its own and once done editing, then reset the tree/s.</p>
+
+<h3>
+<a name="navigating" class="anchor" href="#navigating"><span class="octicon octicon-link"></span></a>Navigating</h3>
+
+<pre><code>root             Returns the root of the tree the record is in, self for a root node
+parent           Returns the parent of the record, nil for a root node
+ancestors        Returns a list of ancestors of the record, self is not included
+children         Returns children of the record
+siblings         Returns siblings of the record, the record itself is not included
+descendants      Returns direct and indirect children of the record, self is not included
+</code></pre>
+
+<pre><code>children?                   are there any children for this record
+parent?                     is there a parent record for this record
+update_children_recursive   reset the tree from the record's parent down to last descendant
+move_to(destination_parent) move this record to another.  Also updates bothe source and 
+                            destination tress
+</code></pre>
+
+<pre><code>Klass.reset_lineage_tree    Reset the entire tree
+</code></pre>
+
+<h3>
+<a name="options-for-has_lineage" class="anchor" href="#options-for-has_lineage"><span class="octicon octicon-link"></span></a>Options for has_lineage</h3>
+
+<pre><code>:parent_key       foreign key to the parent record, defaults to :parent_id
+:lineage_column   column_name storing the ancestry path, defaults to :lineage 
+:leaf_width       the length of each ancestry path key, defaults to 4.
+                  4 means: max siblings 9999, ~ max tree depth of 51 levels. 
+:delimiter        the path separtor, defaults to '/'
+:branch_key       foreign key to separate trees, defaults to nil (no separation).
+                  use this option to add another foreign key so as to categorize 
+                  or differentiate trees.
+:order            column name used to order the siblings, defaults to nil 
+:counter_cache    true/false, defaults to false. use to use Rails counter_cache
+                  if true must add field :lineage_children_count to table
+</code></pre>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/themi">themi</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
