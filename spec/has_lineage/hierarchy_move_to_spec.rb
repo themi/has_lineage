@@ -30,11 +30,14 @@ describe Post, "#move_to" do
     end
 
     it "with acceptable branch node updates the paths" do
-      expect( @b1[:jane].lineage_path ).to eq("/0001/0001")
       expect( @b1[:john].lineage_path ).to eq("/0001/0002")
+      expect( @b1[:jane].lineage_path ).to eq("/0001/0001")
+
       @b1[:jane].move_to(@b1[:john])
+      @b1[:john].reload
+      expect( @b1[:john].lineage_path ).to eq("/0001/0001")
       @b1[:jane].reload
-      expect( @b1[:jane].lineage_path ).to eq("/0001/0002/0002")
+      expect( @b1[:jane].lineage_path ).to eq("/0001/0001/0002")
     end
 
   end

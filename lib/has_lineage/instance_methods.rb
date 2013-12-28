@@ -64,10 +64,11 @@ module HasLineage
       raise MoveException.new("Cannot move root node!") unless parent?
       raise MoveException.new("Cannot move to another tree!") if tree_branch_id != dest_parent.tree_branch_id
       raise MoveException.new("Cannot move to a descendant node!") if dest_parent.lineage_path.starts_with?(lineage_path)
-      old_parent = lineage_parent.clone
+      dest_parent_id = dest_parent.id
+      old_parent_id = lineage_parent.id
       update_attributes(lineage_parent: dest_parent)
-      old_parent.update_children_recursive
-      dest_parent.update_children_recursive
+      self.class.find(old_parent_id).update_children_recursive
+      self.class.find(dest_parent_id).update_children_recursive
     end
 
     # =====
