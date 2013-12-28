@@ -22,8 +22,6 @@ module HasLineage
 
       belongs_to :lineage_parent, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :counter_cache => has_lineage_options[:counter_cache]
       has_many :lineage_children, :class_name => name, :foreign_key => has_lineage_options[:parent_key], :dependent => :destroy
-
-      before_save :update_descendants_with_new_parent
     end
 
     def roots(branch_id = nil)
