@@ -31,11 +31,12 @@
         <h1>
 <a name="haslineage" class="anchor" href="#haslineage"><span class="octicon octicon-link"></span></a>HasLineage</h1>
 
-<p>A gem to manage hierarchical data.  This gem uses the Adjacency pattern to form the relationship and Materialised Path pattern for lookup.</p>
+<p>Another gem to manage hierarchical data.  Materialised Path is used of the quick lookup times and in addition, is used to sort the records for the output.  Adjacency (Parent/Child) is used simply to keep the hierachy integrity.</p>
 
-<p>I used this project as a training exercise to create a gem for a Rails project.  As a training project, it is not full featured and currently is not my intention to make it so. Though as its creator I will keep an open communication line to this project - contact me with your feedback.</p>
+<p><img src="http://hemi.co.nz/signature/has_lineage_tree_path_diag.png" alt="tree sample diagram"></p>
 
-<p>The strategies I selected were from a an earlier project (15years ago) that appeared to me as being efficient.  The reason Materialised Path is fast for <em>lookup</em> is that it uses an ordered btree index on the records ancestry line.</p>
+<h2>
+<a name="other-hierarchy-strategies" class="anchor" href="#other-hierarchy-strategies"><span class="octicon octicon-link"></span></a>Other Hierarchy strategies</h2>
 
 <p>So whats the best? Well in researching this subject I have found the following startegies for handling hierarchical data:</p>
 
