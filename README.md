@@ -4,7 +4,13 @@ A gem to manage hierarchical data.  This gem uses the Adjacency pattern to form 
 
 I used this project as a training exercise to create a gem for a Rails project.  As a training project, it is not full featured and currently is not my intention to make it so. Though as its creator I will keep an open communication line to this project - contact me with your feedback.
 
-The strategies I selected were from a an earlier project (15years ago) that appeared to me as being efficient.  The reason Materialised Path is fast for _lookup_ is that it uses an ordered btree index on the records ancestry line.
+The strategies I selected were from a an earlier project (15years ago) that appeared to me as being efficient.  BTW the reason Materialised Path is fast for _lookup_ is that it uses an ordered btree index on the records ancestry line.
+
+Anyway, I choose to use Materialised Path because of the quick lookup times.  Additionly, I wanted to use the path to be the primary order.  
+
+![tree sample diagram](http://hemi.co.nz/signature/has_lineage_tree_path_diag.png)
+
+## Other Hierarchy strategies
 
 So whats the best? Well in researching this subject I have found the following startegies for handling hierarchical data:
 
