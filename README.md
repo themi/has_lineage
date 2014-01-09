@@ -1,13 +1,14 @@
 # HasLineage
 
-Is a hierarchical data management tool. It uses Materialised Path for fast lookup queries and also doubles as a sort order for displaying the leafs.  Adjacency pattern is used to maintain hierachy integrity.
+Is a hierarchical data management tool. It uses Materialised Path for fast lookup queries and also doubles as a sort order for displaying the leafs.  In addition, the Adjacency pattern is used to maintain hierachy integrity to allow the path to be re-adjusted as changes inevidably occur.
+
+Initially (using Adjacency) I was frustrated by lengthy retrevial times of large trees so I tried out Materialised Path which was lightning quick at retreval but awkward when the tree was modified.  So I had the idea of keeping Adjency in to hold the integrity of the tree while the Materialised path was being adjusted.
 
 ![tree sample diagram](http://hemi.co.nz/signature/has_lineage_tree_path_diag.png)
 
-
 ## Other Hierarchy strategies
 
-I started this project as a training exercise and in the process picked up more data on hierarchical patterns. In researching this subject I found the following startegies:
+I started this project as a training exercise and in the process picked up more data on hierarchical patterns. That research yeilded the following:
 
 #### Adjacency List
 * Each record has a key to its immediate parent.
@@ -23,7 +24,7 @@ I started this project as a training exercise and in the process picked up more 
 
 ## How do they stack up against each other
 
-Here are other studies:
+Here are comparisons:
 
 * [Taxonomic Trees in PostgreSQL](http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html)
 * [Models for hierarchical data by Bill Karwin](http://www.slideshare.net/billkarwin/models-for-hierarchical-data)
