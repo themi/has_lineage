@@ -1,13 +1,13 @@
 # HasLineage
 
-Another gem to manage hierarchical data.  Materialised Path is used of the quick lookup times and in addition, is used to sort the records for the output.  Adjacency (Parent/Child) is used simply to keep the hierachy integrity.
+Is a hierarchical data management tool. It uses Materialised Path for fast lookup queries and also doubles as a sort order for displaying the leafs.  Adjacency pattern is used to maintain hierachy integrity.
 
 ![tree sample diagram](http://hemi.co.nz/signature/has_lineage_tree_path_diag.png)
 
 
 ## Other Hierarchy strategies
 
-So whats the best? Well in researching this subject I have found the following startegies for handling hierarchical data:
+I started this project as a training exercise and in the process picked up more data on hierarchical patterns. In researching this subject I found the following startegies:
 
 #### Adjacency List
 * Each record has a key to its immediate parent.
@@ -23,7 +23,7 @@ So whats the best? Well in researching this subject I have found the following s
 
 ## How do they stack up against each other
 
-Plenty of smarter people than I have already done this - take a look:
+Here are other studies:
 
 * [Taxonomic Trees in PostgreSQL](http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html)
 * [Models for hierarchical data by Bill Karwin](http://www.slideshare.net/billkarwin/models-for-hierarchical-data)
@@ -31,11 +31,11 @@ Plenty of smarter people than I have already done this - take a look:
 
 ## Summary
 
-Each one has its own particular strengths and your choice should be guided by how you are using your data/tree.  Me, I am leaning toward Closure Table as it separates the admin from the actual data file and sets you up to take advantage an ordered btree index (like Materialised Path does).
+Each one has its own particular strengths and your choice should be guided by how you are using your data/tree.  Me, I am leaning toward Closure Table as it separates the admin from the actual data file and sets you up to take advantage an ordered btree index (e.g. Materialised Path). I have not made immediate plans to move this gem in that direction as yet, especially since another developer has already done so.
 
 ## Other gems
 
-If there are others that I havent listed here please let me know and I'll add them.
+Here are other gems that handle this particular problem and based on the various patterns mentioned above:
 
 * [Ancestry](https://github.com/stefankroes/ancestry)
 * [Use PostgreSQL LTREE type with ActiveRecord](https://github.com/RISCfuture/hierarchy)
