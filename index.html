@@ -31,14 +31,16 @@
         <h1>
 <a name="haslineage" class="anchor" href="#haslineage"><span class="octicon octicon-link"></span></a>HasLineage</h1>
 
-<p>Is a hierarchical data management tool. It uses Materialised Path for fast lookup queries and also doubles as a sort order for displaying the leafs.  Adjacency pattern is used to maintain hierachy integrity.</p>
+<p>Is a hierarchical data management tool. It uses Materialised Path for fast lookup queries and also doubles as a sort order for displaying the leafs.  In addition, the Adjacency pattern is used to maintain hierachy integrity to allow the path to be re-adjusted as changes inevidably occur.</p>
+
+<p>Initially (using Adjacency) I was frustrated by lengthy retrevial times of large trees so I tried out Materialised Path which was lightning quick at retreval but awkward when the tree was modified.  So I had the idea of keeping Adjency in to hold the integrity of the tree while the Materialised path was being adjusted.</p>
 
 <p><img src="http://hemi.co.nz/signature/has_lineage_tree_path_diag.png" alt="tree sample diagram"></p>
 
 <h2>
 <a name="other-hierarchy-strategies" class="anchor" href="#other-hierarchy-strategies"><span class="octicon octicon-link"></span></a>Other Hierarchy strategies</h2>
 
-<p>I started this project as a training exercise and in the process picked up more data on hierarchical patterns. In researching this subject I found the following startegies:</p>
+<p>I started this project as a training exercise and in the process picked up more data on hierarchical patterns. That research yeilded the following:</p>
 
 <h4>
 <a name="adjacency-list" class="anchor" href="#adjacency-list"><span class="octicon octicon-link"></span></a>Adjacency List</h4>
@@ -63,7 +65,7 @@
 </ul><h2>
 <a name="how-do-they-stack-up-against-each-other" class="anchor" href="#how-do-they-stack-up-against-each-other"><span class="octicon octicon-link"></span></a>How do they stack up against each other</h2>
 
-<p>Here are other studies:</p>
+<p>Here are comparisons:</p>
 
 <ul>
 <li><a href="http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html">Taxonomic Trees in PostgreSQL</a></li>
