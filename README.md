@@ -131,6 +131,7 @@ I started this project as a training exercise and in the process picked up more 
 
 Here are comparisons:
 
+* [Recursive Data Structures With Rails](http://gmarik.info/blog/2012/10/14/recursive-data-structures-with-rails)
 * [Taxonomic Trees in PostgreSQL](http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html)
 * [Models for hierarchical data by Bill Karwin](http://www.slideshare.net/billkarwin/models-for-hierarchical-data)
 * [Trees In The Database - Advanced data structures by Lorenzo Alberton](http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures)
