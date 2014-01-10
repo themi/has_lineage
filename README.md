@@ -97,7 +97,7 @@ Klass.reset_lineage_tree    Reset the entire tree
                    4 means: max siblings 9999, ~ max tree depth of 51 levels with 256 byte string. 
 :delimiter         the path separtor, defaults to '/'
 :tree_key_column   foreign key or value that separates trees, defaults to nil.
-                   use this option to add to categorize or differentiate trees.
+                   use this option to categorize or differentiate trees.
 :order_column      column name used to order the siblings, defaults to nil 
 :counter_cache     true/false, defaults to false. use to use Rails counter_cache
                    if true must add field :lineage_children_count to table
