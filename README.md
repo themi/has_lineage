@@ -6,43 +6,6 @@ Initially (using Adjacency) I was frustrated by lengthy retrevial times of large
 
 ![tree sample diagram](http://hemi.co.nz/signature/has_lineage_tree_path_diag.png)
 
-## Other Hierarchy strategies
-
-I started this project as a training exercise and in the process picked up more data on hierarchical patterns. That research yeilded the following:
-
-#### Adjacency List
-* Each record has a key to its immediate parent.
-
-#### Materialised Path / Path Enumeration
-* Each record has a field containing complete line of its ancestry all the way up to the root.
-
-#### Nested Sets.
-* Each record has keys to the record immediatly left and right of its position the hierarchical chain.
-
-#### Closure Table
-* The complete line of its ancestry all the way up to the root is maintained as separate records in a separate table.
-
-## How do they stack up against each other
-
-Here are comparisons:
-
-* [Taxonomic Trees in PostgreSQL](http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html)
-* [Models for hierarchical data by Bill Karwin](http://www.slideshare.net/billkarwin/models-for-hierarchical-data)
-* [Trees In The Database - Advanced data structures by Lorenzo Alberton](http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures)
-
-## Summary
-
-Each one has its own particular strengths and your choice should be guided by how you are using your data/tree.  Me, I am leaning toward Closure Table as it separates the admin from the actual data file and sets you up to take advantage an ordered btree index (e.g. Materialised Path). I have not made immediate plans to move this gem in that direction as yet, especially since another developer has already done so.
-
-## Other gems
-
-Here are other gems that handle this particular problem and based on the various patterns mentioned above:
-
-* [Ancestry](https://github.com/stefankroes/ancestry)
-* [Use PostgreSQL LTREE type with ActiveRecord](https://github.com/RISCfuture/hierarchy)
-* [Closure Tree](https://github.com/mceachen/closure_tree)
-* [Acts as tree for Rails 3](https://github.com/kristianmandrup/acts_as_tree_rails3)
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -148,3 +111,41 @@ Klass.reset_lineage_tree    Reset the entire tree
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Other Hierarchy strategies
+
+I started this project as a training exercise and in the process picked up more data on hierarchical patterns. That research yeilded the following:
+
+#### Adjacency List
+* Each record has a key to its immediate parent.
+
+#### Materialised Path / Path Enumeration
+* Each record has a field containing complete line of its ancestry all the way up to the root.
+
+#### Nested Sets.
+* Each record has keys to the record immediatly left and right of its position the hierarchical chain.
+
+#### Closure Table
+* The complete line of its ancestry all the way up to the root is maintained as separate records in a separate table.
+
+## How do they stack up against each other
+
+Here are comparisons:
+
+* [Taxonomic Trees in PostgreSQL](http://gbif.blogspot.com.au/2012/06/taxonomic-trees-in-postgresql.html)
+* [Models for hierarchical data by Bill Karwin](http://www.slideshare.net/billkarwin/models-for-hierarchical-data)
+* [Trees In The Database - Advanced data structures by Lorenzo Alberton](http://www.slideshare.net/quipo/trees-in-the-database-advanced-data-structures)
+
+## Summary
+
+Each one has its own particular strengths and your choice should be guided by how you are using your data/tree.  Me, I am leaning toward Closure Table as it separates the admin from the actual data file and sets you up to take advantage an ordered btree index (e.g. Materialised Path). I have not made immediate plans to move this gem in that direction as yet, especially since another developer has already done so.
+
+## Other gems
+
+Here are other gems that handle this particular problem and based on the various patterns mentioned above:
+
+* [Ancestry](https://github.com/stefankroes/ancestry)
+* [Use PostgreSQL LTREE type with ActiveRecord](https://github.com/RISCfuture/hierarchy)
+* [Closure Tree](https://github.com/mceachen/closure_tree)
+* [Acts as tree for Rails 3](https://github.com/kristianmandrup/acts_as_tree_rails3)
+
