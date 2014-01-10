@@ -3,7 +3,7 @@ require 'database_helper'
 
 describe Post, "Hierachy instance methods" do
 
-  before { setup_db; Post.has_lineage({branch_key: 'branch_id'})  }
+  before { setup_db; Post.has_lineage({tree_key_column: 'branch_id'})  }
   after  { teardown_db }
 
   context "with complex hierarchy tree" do

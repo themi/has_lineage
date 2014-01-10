@@ -25,20 +25,20 @@ describe SampleClass, "patching" do
     before { described_class.has_lineage options }
 
     context "using an instance" do
-      it { expect(described_class.new.has_lineage_options[:parent_key]).to eq('parent_id') }
+      it { expect(described_class.new.has_lineage_options[:parent_key_column]).to eq('parent_id') }
 
       context "with a custom field" do
-        let(:options) { {parent_key: 'custom_id'} }
-        it { expect(described_class.new.has_lineage_options[:parent_key]).to eq('custom_id') }
+        let(:options) { {parent_key_column: 'custom_id'} }
+        it { expect(described_class.new.has_lineage_options[:parent_key_column]).to eq('custom_id') }
       end
     end
 
     context "using the class" do
-      it { expect(described_class.has_lineage_options[:parent_key]).to eq('parent_id') }
+      it { expect(described_class.has_lineage_options[:parent_key_column]).to eq('parent_id') }
 
       context "with a custom field" do
-        let(:options) { {parent_key: 'custom_id'} }
-        it { expect(described_class.has_lineage_options[:parent_key]).to eq('custom_id') }
+        let(:options) { {parent_key_column: 'custom_id'} }
+        it { expect(described_class.has_lineage_options[:parent_key_column]).to eq('custom_id') }
       end
     end
   end

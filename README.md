@@ -91,17 +91,17 @@ Klass.reset_lineage_tree    Reset the entire tree
 ### Options for has_lineage
 
 ```
-:parent_key       foreign key to the parent record, defaults to :parent_id
-:lineage_column   column_name storing the ancestry path, defaults to :lineage 
-:leaf_width       the length of each ancestry path key, defaults to 4.
-                  4 means: max siblings 9999, ~ max tree depth of 51 levels. 
-:delimiter        the path separtor, defaults to '/'
-:branch_key       foreign key to separate trees, defaults to nil (no separation).
-                  use this option to add another foreign key so as to categorize 
-                  or differentiate trees.
-:order            column name used to order the siblings, defaults to nil 
-:counter_cache    true/false, defaults to false. use to use Rails counter_cache
-                  if true must add field :lineage_children_count to table
+:parent_key_column foreign key to the parent record, defaults to :parent_id
+:lineage_column    column_name storing the ancestry path, defaults to :lineage 
+:leaf_width        the length of each ancestry path key, defaults to 4.
+                   4 means: max siblings 9999, ~ max tree depth of 51 levels. 
+:delimiter         the path separtor, defaults to '/'
+:tree_key_column   foreign key to filtering record - separates trees, defaults to nil.
+                   use this option to add another foreign key so as to categorize 
+                   or differentiate trees.
+:order             column name used to order the siblings, defaults to nil 
+:counter_cache     true/false, defaults to false. use to use Rails counter_cache
+                   if true must add field :lineage_children_count to table
 ```
 
 ## Contributing

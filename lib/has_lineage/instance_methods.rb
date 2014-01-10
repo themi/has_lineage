@@ -2,11 +2,11 @@ module HasLineage
   module LineageInstanceMethods
 
     def root
-      self.class.root_for(lineage_path, tree_branch_id)
+      self.class.root_for(lineage_path, lineage_tree_id)
     end
 
     def ancestors
-      self.class.ancestors_for(lineage_path, tree_branch_id).lineage_order - [self]
+      self.class.ancestors_for(lineage_path, lineage_tree_id).lineage_order - [self]
     end
 
     def descendants
@@ -14,7 +14,7 @@ module HasLineage
     end
 
     def self_and_descendants
-      self.class.descendants_of(lineage_path, tree_branch_id).lineage_order
+      self.class.descendants_of(lineage_path, lineage_tree_id).lineage_order
     end
 
     def siblings
@@ -22,7 +22,7 @@ module HasLineage
     end
 
     def self_and_siblings
-      (lineage_parent.present? ? lineage_parent.lineage_children.lineage_filter(tree_branch_id) : self.class.roots(tree_branch_id)).lineage_order
+      (lineage_parent.present? ? lineage_parent.lineage_children.lineage_filter(lineage_tree_id) : self.class.roots(lineage_tree_id)).lineage_order
     end
 
     def children?
@@ -37,8 +37,12 @@ module HasLineage
       lineage_parent.present?
     end
 
+    def parent
+      lineage_parent
+    end
+
     def update_children_recursive(prefix = lineage_path)
-      lineage_children.lineage_filter(tree_branch_id).presort_order.each_with_index do |sibling, index|
+      lineage_children.lineage_filter(lineage_tree_id).presort_order.each_with_index do |sibling, index|
         sibling.lineage_path = self.class.new_lineage_path(prefix, index)
         sibling.update_children_recursive if children?
       end
@@ -53,16 +57,22 @@ module HasLineage
     end
 
     def parent_key_changed?
-      send("#{has_lineage_options[:parent_key]}_changed?")
+      send("#{has_lineage_options[:parent_key_column]}_changed?")
     end
 
     def reset_lineage_tree
       self.class.reset_lineage_tree(branch_id)
     end
 
+    def hierarchy_depth
+      return 0 if lineage_path.nil?
+      (lineage_path.length / has_lineage_options[:leaf_width]).to_i
+    end
+    alias :depth :hierarchy_depth
+
     def move_to(dest_parent)
       raise MoveException.new("Cannot move root node!") unless parent?
-      raise MoveException.new("Cannot move to another tree!") if tree_branch_id != dest_parent.tree_branch_id
+      raise MoveException.new("Cannot move to another tree!") if lineage_tree_id != dest_parent.lineage_tree_id
       raise MoveException.new("Cannot move to a descendant node!") if dest_parent.lineage_path.starts_with?(lineage_path)
       dest_parent_id = dest_parent.id
       old_parent_id = lineage_parent.id
@@ -75,8 +85,8 @@ module HasLineage
     protected
     # =====
 
-      def tree_branch_id
-        send(has_lineage_options[:branch_key]) if has_lineage_options[:branch_key].present?
+      def lineage_tree_id
+        send(has_lineage_options[:tree_key_column]) if has_lineage_options[:tree_key_column].present?
       end
 
   end
