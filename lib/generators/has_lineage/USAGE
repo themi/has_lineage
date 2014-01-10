@@ -1,5 +1,5 @@
 Description:
-    creates a migration file to add lineage fields to the appropriate table
+    creates a migration file to add lineage fields to the specified table/model
 
 Example:
   rails generate has_lineage:migration User
@@ -9,6 +9,6 @@ This will create:
 
   Once created you will need to modify further depending on your requirements
     if you already have a field that refers to parent object then remove the parent_id line 
-    if you donot whish to use the branch option then remove the branch_id line else rename accordingly
+    if you donot whish to use the tree_key_column option then remove the tree_id line else adjust as needed
     if you donot require counter caching then remove the lineage_children_count line
-    Also remove the associated add_index line as required
+    Also remove the associated add_index line as needed
