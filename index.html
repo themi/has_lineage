@@ -123,17 +123,16 @@ move_to(destination_parent) move this record to another.  Also updates bothe sou
 <h3>
 <a name="options-for-has_lineage" class="anchor" href="#options-for-has_lineage"><span class="octicon octicon-link"></span></a>Options for has_lineage</h3>
 
-<pre><code>:parent_key       foreign key to the parent record, defaults to :parent_id
-:lineage_column   column_name storing the ancestry path, defaults to :lineage 
-:leaf_width       the length of each ancestry path key, defaults to 4.
-                  4 means: max siblings 9999, ~ max tree depth of 51 levels. 
-:delimiter        the path separtor, defaults to '/'
-:branch_key       foreign key to separate trees, defaults to nil (no separation).
-                  use this option to add another foreign key so as to categorize 
-                  or differentiate trees.
-:order            column name used to order the siblings, defaults to nil 
-:counter_cache    true/false, defaults to false. use to use Rails counter_cache
-                  if true must add field :lineage_children_count to table
+<pre><code>:parent_key_column foreign key to the parent record, defaults to :parent_id
+:lineage_column    column_name storing the ancestry path, defaults to :lineage 
+:leaf_width        the length of each ancestry path key, defaults to 4.
+                   4 means: max siblings 9999, ~ max tree depth of 51 levels with 256 byte string. 
+:delimiter         the path separtor, defaults to '/'
+:tree_key_column   foreign key or value that separates trees, defaults to nil.
+                   use this option to add to categorize or differentiate trees.
+:order_column      column name used to order the siblings, defaults to nil 
+:counter_cache     true/false, defaults to false. use to use Rails counter_cache
+                   if true must add field :lineage_children_count to table
 </code></pre>
 
 <h2>
@@ -193,6 +192,7 @@ move_to(destination_parent) move this record to another.  Also updates bothe sou
 <li><a href="https://github.com/stefankroes/ancestry">Ancestry</a></li>
 <li><a href="https://github.com/RISCfuture/hierarchy">Use PostgreSQL LTREE type with ActiveRecord</a></li>
 <li><a href="https://github.com/mceachen/closure_tree">Closure Tree</a></li>
+<li><a href="https://github.com/collectiveidea/awesome_nested_set">An awesome replacement for acts_as_nested_set</a></li>
 <li><a href="https://github.com/kristianmandrup/acts_as_tree_rails3">Acts as tree for Rails 3</a></li>
 </ul>
       </section>
