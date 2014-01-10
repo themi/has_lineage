@@ -51,12 +51,12 @@ module HasLineage
     end
 
     def lineage_order
-      order(%Q{#{has_lineage_options[:lineage_column]}})
+      order(has_lineage_options[:lineage_column].to_sym)
     end
 
     def lineage_filter(tree_id = nil)
       if tree_id.present? && has_lineage_options[:tree_key_column].present?
-        where("#{has_lineage_options[:tree_key_column]} = ?", tree_id) 
+        where(has_lineage_options[:tree_key_column].to_sym => tree_id) 
       else
         all
       end
