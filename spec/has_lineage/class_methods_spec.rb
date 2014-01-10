@@ -35,13 +35,13 @@ describe Post, "Class methods" do
       let(:options) { {} }
 
       it "sets default values" do
-        described_class.has_lineage_options[:parent_key_column].should     == 'parent_id'
-        described_class.has_lineage_options[:lineage_column].should == 'lineage'
-        described_class.has_lineage_options[:leaf_width].should     == 4
-        described_class.has_lineage_options[:delimiter].should      == '/'
-        described_class.has_lineage_options[:tree_key_column].should     be_nil
-        described_class.has_lineage_options[:order].should          be_nil
-        described_class.has_lineage_options[:counter_cache].should  be_false
+        described_class.has_lineage_options[:parent_key_column].should  == 'parent_id'
+        described_class.has_lineage_options[:lineage_column].should     == 'lineage'
+        described_class.has_lineage_options[:leaf_width].should         == 4
+        described_class.has_lineage_options[:delimiter].should          == '/'
+        described_class.has_lineage_options[:tree_key_column].should    be_nil
+        described_class.has_lineage_options[:order_column].should       be_nil
+        described_class.has_lineage_options[:counter_cache].should      be_false
       end
     end
 
@@ -49,13 +49,13 @@ describe Post, "Class methods" do
       let(:options) { {leaf_width: 6, counter_cache: true} }
 
       it "sets custom and default values" do
-        described_class.has_lineage_options[:parent_key_column].should     == 'parent_id'
-        described_class.has_lineage_options[:lineage_column].should == 'lineage'
-        described_class.has_lineage_options[:leaf_width].should     == 6
-        described_class.has_lineage_options[:delimiter].should      == '/'
-        described_class.has_lineage_options[:tree_key_column].should     be_nil
-        described_class.has_lineage_options[:order].should          be_nil
-        described_class.has_lineage_options[:counter_cache].should  be_true
+        described_class.has_lineage_options[:parent_key_column].should  == 'parent_id'
+        described_class.has_lineage_options[:lineage_column].should     == 'lineage'
+        described_class.has_lineage_options[:leaf_width].should         == 6
+        described_class.has_lineage_options[:delimiter].should          == '/'
+        described_class.has_lineage_options[:tree_key_column].should    be_nil
+        described_class.has_lineage_options[:order_column].should       be_nil
+        described_class.has_lineage_options[:counter_cache].should      be_true
       end
     end
 

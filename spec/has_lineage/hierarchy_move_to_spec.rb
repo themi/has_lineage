@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'database_helper'
 
 describe Post, "#move_to" do
-  before { setup_db; Post.has_lineage({tree_key_column: 'branch_id', order: :name})  }
+  before { setup_db; Post.has_lineage({tree_key_column: 'branch_id', order_column: :name})  }
   after  { teardown_db }
 
   context "with hierarchy tree" do

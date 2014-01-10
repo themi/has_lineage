@@ -7,7 +7,7 @@ module HasLineage
 
       raise HasLineage::GeneralException.new("Options for has_lineage must be in a hash.") unless options.is_a? Hash
 
-      options.assert_valid_keys(:parent_key_column, :lineage_column, :leaf_width, :delimiter, :tree_key_column, :order, :counter_cache)
+      options.assert_valid_keys(:parent_key_column, :lineage_column, :leaf_width, :delimiter, :tree_key_column, :order_column, :counter_cache)
 
       self.has_lineage_options = { 
               :parent_key_column => "parent_id", 
@@ -15,7 +15,7 @@ module HasLineage
               :leaf_width => 4, 
               :delimiter => '/',
               :tree_key_column => nil, 
-              :order => nil, 
+              :order_column => nil, 
               :counter_cache => false }.update(options)
 
       belongs_to :lineage_parent, :class_name => name, :foreign_key => has_lineage_options[:parent_key_column], :counter_cache => has_lineage_options[:counter_cache]
@@ -47,7 +47,7 @@ module HasLineage
     end
 
     def presort_order
-      order(%Q{#{has_lineage_options[:order]}})
+      order(%Q{#{has_lineage_options[:order_column]}})
     end
 
     def lineage_order

@@ -94,12 +94,11 @@ Klass.reset_lineage_tree    Reset the entire tree
 :parent_key_column foreign key to the parent record, defaults to :parent_id
 :lineage_column    column_name storing the ancestry path, defaults to :lineage 
 :leaf_width        the length of each ancestry path key, defaults to 4.
-                   4 means: max siblings 9999, ~ max tree depth of 51 levels. 
+                   4 means: max siblings 9999, ~ max tree depth of 51 levels with 256 byte string. 
 :delimiter         the path separtor, defaults to '/'
-:tree_key_column   foreign key to filtering record - separates trees, defaults to nil.
-                   use this option to add another foreign key so as to categorize 
-                   or differentiate trees.
-:order             column name used to order the siblings, defaults to nil 
+:tree_key_column   foreign key or value that separates trees, defaults to nil.
+                   use this option to add to categorize or differentiate trees.
+:order_column      column name used to order the siblings, defaults to nil 
 :counter_cache     true/false, defaults to false. use to use Rails counter_cache
                    if true must add field :lineage_children_count to table
 ```
@@ -147,5 +146,6 @@ Here are other gems that handle this particular problem and based on the various
 * [Ancestry](https://github.com/stefankroes/ancestry)
 * [Use PostgreSQL LTREE type with ActiveRecord](https://github.com/RISCfuture/hierarchy)
 * [Closure Tree](https://github.com/mceachen/closure_tree)
+* [An awesome replacement for acts_as_nested_set](https://github.com/collectiveidea/awesome_nested_set)
 * [Acts as tree for Rails 3](https://github.com/kristianmandrup/acts_as_tree_rails3)
 
