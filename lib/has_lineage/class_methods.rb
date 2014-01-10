@@ -69,13 +69,7 @@ module HasLineage
     def reset_lineage_tree(tree_id = nil, &block)
       yield if block_given?
 
-      trees = if has_lineage_options[:tree_key_column].present?
-        select(has_lineage_options[:tree_key_column].to_sym).distinct.pluck(has_lineage_options[:tree_key_column].to_sym)
-      else
-        [nil]
-      end
-
-      trees.each do |tree_id|
+      distinct_tree_values.each do |tree_id|
         roots(tree_id).presort_order.each_with_index do |sibling, index|
           prefix = sibling.send(has_lineage_options[:tree_key_column]) if has_lineage_options[:tree_key_column].present?
           sibling.lineage_path = new_lineage_path(prefix, index)
@@ -106,6 +100,14 @@ module HasLineage
         result << new_path.clone
       end
       result
+    end
+
+    def distinct_tree_values
+      if has_lineage_options[:tree_key_column].present?
+        roots.select(has_lineage_options[:tree_key_column].to_sym).distinct.pluck(has_lineage_options[:tree_key_column].to_sym)
+      else
+        [nil]
+      end
     end
 
   end
