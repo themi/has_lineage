@@ -104,7 +104,8 @@ module HasLineage
 
     def distinct_tree_values
       if has_lineage_options[:tree_key_column].present?
-        roots.select(has_lineage_options[:tree_key_column].to_sym).distinct.pluck(has_lineage_options[:tree_key_column].to_sym)
+        key = has_lineage_options[:tree_key_column].to_sym
+        roots.select(key).distinct.order(key).pluck(key)
       else
         [nil]
       end
