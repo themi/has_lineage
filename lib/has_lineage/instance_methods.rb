@@ -61,7 +61,7 @@ module HasLineage
     end
 
     def reset_lineage_tree
-      self.class.reset_lineage_tree(branch_id)
+      self.class.reset_lineage_tree(lineage_tree_id)
     end
 
     def hierarchy_depth

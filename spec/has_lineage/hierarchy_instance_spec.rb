@@ -3,7 +3,7 @@ require 'database_helper'
 
 describe Post, "Hierachy instance methods" do
 
-  before { setup_db; Post.has_lineage({tree_key_column: 'branch_id'})  }
+  before { setup_db; Post.has_lineage({tree_key_column: 'tree_id'})  }
   after  { teardown_db }
 
   context "with complex hierarchy tree" do
@@ -64,7 +64,7 @@ describe Post, "Hierachy instance methods" do
     end
 
     it "#siblings" do
-      paul = Post.create(:name => "Paul_4", branch_id: 4)
+      paul = Post.create(:name => "Paul_4", tree_id: 4)
 
       expect(@b1[:harry].siblings.count).to eq(1)
       expect(@b1[:harry].siblings).to include(@b3[:harry])

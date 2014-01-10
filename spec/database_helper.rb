@@ -17,7 +17,7 @@ def setup_db
       t.column :name, :string
       t.column :parent_id, :integer
       t.column :lineage, :string
-      t.column :branch_id, :integer
+      t.column :tree_id, :integer
       t.column :lineage_children_count, :integer
     end
   end
@@ -31,13 +31,13 @@ def teardown_db
   end
 end
 
-def seed_basic_tree(branch_id)
-  harry = Post.create(:name => "Harry_#{branch_id}", branch_id: branch_id)
-  mary = Post.create(:name => "Mary_#{branch_id}", branch_id: branch_id)
-  john = Post.create(:name => "John_#{branch_id}", branch_id: branch_id)
-  jane = Post.create(:name => "Jane_#{branch_id}", branch_id: branch_id)
-  larry = Post.create(:name => "Larry_#{branch_id}", branch_id: branch_id)
-  gina = Post.create(:name => "Gina_#{branch_id}", branch_id: branch_id)
+def seed_basic_tree(tree_id)
+  harry = Post.create(:name => "Harry_#{tree_id}", tree_id: tree_id)
+  mary = Post.create(:name => "Mary_#{tree_id}", tree_id: tree_id)
+  john = Post.create(:name => "John_#{tree_id}", tree_id: tree_id)
+  jane = Post.create(:name => "Jane_#{tree_id}", tree_id: tree_id)
+  larry = Post.create(:name => "Larry_#{tree_id}", tree_id: tree_id)
+  gina = Post.create(:name => "Gina_#{tree_id}", tree_id: tree_id)
   Post.reset_lineage_tree do
     harry.lineage_children << mary
     harry.lineage_children << john

@@ -3,7 +3,7 @@ require 'database_helper'
 
 describe Post, ".lineage_path" do
 
-  before { setup_db; Post.has_lineage({tree_key_column: 'branch_id'})  }
+  before { setup_db; Post.has_lineage({tree_key_column: 'tree_id'})  }
   after  { teardown_db }
 
   context "with multiple hierarchy trees" do
