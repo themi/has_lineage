@@ -5,7 +5,7 @@
 
 Rails hierarchical modelling tool. Using Materialised Path for fast lookup (also doubles as a sort order).  In addition, the Adjacency pattern is used to maintain referencial integrity to allow the path to be re-adjusted as changes inevidably occur.
 
-Initially (using Adjacency) I was frustrated by lengthy retrevial times of large trees so I tried out Materialised Path which was lightning quick at retreval but awkward when the tree was modified.  So I had the idea of keeping Adjency in to hold the integrity of the tree while the Materialised path was being adjusted.
+Initially (using Adjacency) I was frustrated by lengthy retrevial times of large trees so I tried out Materialised Path which was lightning quick at retreval but awkward when the tree was modified.  And Adjency was needed to maintain referential integrity while the Materialised path was being re-adjusted.
 
 ![tree sample diagram](http://hemi.co.nz/signature/has_lineage_tree_path_diag.png)
 
@@ -79,11 +79,11 @@ descendants      Returns direct and indirect children of the record, self is not
 ```
 
 ```
-children?                   are there any children for this record
-parent?                     is there a parent record for this record
-update_children_recursive   reset the tree from the record's parent down to last descendant
-move_to(destination_parent) move this record to another.  Also updates bothe source and 
-                            destination tress
+children?                     are there any children for this record
+parent?                       is there a parent record for this record
+update_child_paths_recursive  reset the tree from the record's parent down to last descendant
+move_to(destination_parent)   move this record to another.  Also updates bothe source and 
+                              destination tress
 ```
 
 ```

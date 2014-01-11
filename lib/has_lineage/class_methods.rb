@@ -23,21 +23,19 @@ module HasLineage
     end
 
     def roots(tree_id = nil)
-      lineage_filter(tree_id).where("#{has_lineage_options[:parent_key_column]} IS NULL")
+      lineage_tree(tree_id).where("#{has_lineage_options[:parent_key_column]} IS NULL")
     end
 
     def root_for(path, tree_id = nil)
-      path_array = array_for(path)
-      root_path = path_array[0] + path_pattern(path_array[1].to_i) 
-      lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} = ?", root_path).first
+      lineage_tree(tree_id).where("#{has_lineage_options[:lineage_column]} = ?", root_path_for(path)).first
     end
 
     def ancestors_for(path, tree_id = nil)
-      lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} IN (?)", progressive_array_for(path))
+      lineage_tree(tree_id).where("#{has_lineage_options[:lineage_column]} IN (?)", ancestor_array_for(path))
     end
 
     def descendants_of(path, tree_id = nil)
-      lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{path}%")
+      lineage_tree(tree_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{path}%")
     end
 
     def presort_order
@@ -48,7 +46,7 @@ module HasLineage
       order(has_lineage_options[:lineage_column].to_sym)
     end
 
-    def lineage_filter(tree_id = nil)
+    def lineage_tree(tree_id = nil)
       if tree_id.present? && has_lineage_options[:tree_key_column].present?
         where(has_lineage_options[:tree_key_column].to_sym => tree_id) 
       else
@@ -67,24 +65,33 @@ module HasLineage
         roots(tree_id).presort_order.each_with_index do |sibling, index|
           prefix = sibling.send(has_lineage_options[:tree_key_column]) if has_lineage_options[:tree_key_column].present?
           sibling.lineage_path = new_lineage_path(prefix, index)
-          sibling.update_children_recursive if sibling.children?
+          sibling.update_child_paths_recursive if sibling.children?
         end
       end
+    end
+
+    def hierachy_depth_for(path)
+      array_for(path).size - 1
     end
 
     # =====
     private
     # =====
 
-    def array_for(value)
-      value.split("#{has_lineage_options[:delimiter]}")
+    def array_for(path)
+      path.split("#{has_lineage_options[:delimiter]}")
     end
 
     def path_pattern(index)
       "#{has_lineage_options[:delimiter]}%0#{has_lineage_options[:leaf_width]}d" % index
     end
 
-    def progressive_array_for(path)
+    def root_path_for(path)
+      path_array = array_for(path)
+      path_array[0] + path_pattern(path_array[1].to_i) 
+    end
+
+    def ancestor_array_for(path)
       arr = array_for(path)
       result = []
       new_path = arr[0]
