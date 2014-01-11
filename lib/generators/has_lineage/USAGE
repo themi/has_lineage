@@ -5,7 +5,7 @@ Example:
   rails generate has_lineage:migration User
 
 This will create:
-  db/migration/add_has_lineage_fields_to_users_#########.rb
+  db/migration/add_has_lineage_fields_to_users_##########.rb
 
   Once created you will need to modify further depending on your requirements
     if you already have a field that refers to parent object then remove the parent_id line 
