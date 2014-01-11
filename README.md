@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/themi/has_lineage.png?branch=master)](https://travis-ci.org/themi/has_lineage)
-
+[![Coverage Status](https://coveralls.io/repos/themi/has_lineage/badge.png)](https://coveralls.io/r/themi/has_lineage)
 
 # HasLineage
 
