@@ -6,6 +6,27 @@ describe Post, "Hierachy instance methods" do
   before { setup_db; Post.has_lineage({tree_key_column: 'tree_id'})  }
   after  { teardown_db }
 
+  context "with an instance" do
+    subject { described_class.new }
+    before { subject.stub(:lineage_path).and_return(path) }
+    context "and 3 levels" do
+      let(:path) { '/0001/0001/0001' }
+      its(:depth) {  should eq(3) }
+    end
+    context "and a top level" do
+      let(:path) { '/0001' }
+      its(:depth) {  should eq(1) }
+    end
+    context "and a prefixed top level" do
+      let(:path) { 'TREE/0001' }
+      its(:depth) {  should eq(1) }
+    end
+    context "and a prefixed 4 level" do
+      let(:path) { 'TREE/0001/0002/0003/0004' }
+      its(:depth) {  should eq(4) }
+    end
+  end
+
   context "with complex hierarchy tree" do
     before do
       @b1 = seed_basic_tree(1)

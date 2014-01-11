@@ -66,7 +66,7 @@ module HasLineage
 
     def hierarchy_depth
       return 0 if lineage_path.nil?
-      (lineage_path.length / has_lineage_options[:leaf_width]).to_i
+      lineage_path.split(has_lineage_options[:delimiter]).size - 1
     end
     alias :depth :hierarchy_depth
 
@@ -74,9 +74,15 @@ module HasLineage
       raise MoveException.new("Cannot move root node!") unless parent?
       raise MoveException.new("Cannot move to another tree!") if lineage_tree_id != dest_parent.lineage_tree_id
       raise MoveException.new("Cannot move to a descendant node!") if dest_parent.lineage_path.starts_with?(lineage_path)
+
       dest_parent_id = dest_parent.id
       old_parent_id = lineage_parent.id
-      update_attributes(lineage_parent: dest_parent)
+
+      attribs = { :lineage_parent => dest_parent }
+      attribs.merge!({ has_lineage_options[:tree_key_column].to_sym => dest_parent.send(has_lineage_options[:tree_key_column]) }) if has_lineage_options[:tree_key_column]
+
+      update_attributes(attribs)
+
       self.class.find(old_parent_id).update_children_recursive
       self.class.find(dest_parent_id).update_children_recursive
     end
