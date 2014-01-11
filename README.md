@@ -1,6 +1,6 @@
 # HasLineage
 
-Is a hierarchical data management tool. It uses Materialised Path for fast lookup queries and also doubles as a sort order for displaying the leafs.  In addition, the Adjacency pattern is used to maintain hierachy integrity to allow the path to be re-adjusted as changes inevidably occur.
+Rails hierarchical modelling tool. Using Materialised Path for fast lookup (also doubles as a sort order).  In addition, the Adjacency pattern is used to maintain referencial integrity to allow the path to be re-adjusted as changes inevidably occur.
 
 Initially (using Adjacency) I was frustrated by lengthy retrevial times of large trees so I tried out Materialised Path which was lightning quick at retreval but awkward when the tree was modified.  So I had the idea of keeping Adjency in to hold the integrity of the tree while the Materialised path was being adjusted.
 
