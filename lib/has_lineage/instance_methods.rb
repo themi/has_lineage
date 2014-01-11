@@ -60,10 +60,6 @@ module HasLineage
       send("#{has_lineage_options[:parent_key_column]}_changed?")
     end
 
-    def reset_lineage_tree
-      self.class.reset_lineage_tree(lineage_tree_id)
-    end
-
     def hierarchy_depth
       return 0 if lineage_path.nil?
       lineage_path.split(has_lineage_options[:delimiter]).size - 1

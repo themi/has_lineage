@@ -96,9 +96,20 @@ describe Post, "Hierachy instance methods" do
       expect(paul.siblings).to be_empty
     end
 
+    it "#children" do
+      expect(@b1[:harry].children).to include(@b1[:mary], @b1[:john], @b1[:jane])
+      expect(@b1[:harry].children.count).to eq(3)
+      expect(@b1[:mary].children).to eq([])
+    end
+
     it "#children?" do
       expect(@b1[:harry].children?).to be_true
       expect(@b1[:mary].children?).to be_false
+    end
+
+    it "#parent" do
+      expect(@b1[:harry].parent).to be_nil
+      expect(@b1[:mary].parent).to eq(@b1[:harry])
     end
 
     it "#parent?" do

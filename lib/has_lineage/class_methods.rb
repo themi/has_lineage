@@ -27,23 +27,17 @@ module HasLineage
     end
 
     def root_for(path, tree_id = nil)
-      return nil unless path.present?
       path_array = array_for(path)
       root_path = path_array[0] + path_pattern(path_array[1].to_i) 
       lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} = ?", root_path).first
     end
 
     def ancestors_for(path, tree_id = nil)
-      return [] unless path.present?
       lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} IN (?)", progressive_array_for(path))
     end
 
     def descendants_of(path, tree_id = nil)
-      if path.present?
-        lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{path}%")
-      else
-        lineage_filter(tree_id)
-      end
+      lineage_filter(tree_id).where("#{has_lineage_options[:lineage_column]} LIKE ?", "#{path}%")
     end
 
     def presort_order

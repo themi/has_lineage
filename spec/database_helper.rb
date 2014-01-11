@@ -31,7 +31,7 @@ def teardown_db
   end
 end
 
-def seed_basic_tree(tree_id)
+def seed_basic_tree(tree_id = nil)
   harry = Post.create(:name => "Harry_#{tree_id}", tree_id: tree_id)
   mary = Post.create(:name => "Mary_#{tree_id}", tree_id: tree_id)
   john = Post.create(:name => "John_#{tree_id}", tree_id: tree_id)
