@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/themi/has_lineage.png?branch=master)](https://travis-ci.org/themi/has_lineage)
+
+
 # HasLineage
 
 Rails hierarchical modelling tool. Using Materialised Path for fast lookup (also doubles as a sort order).  In addition, the Adjacency pattern is used to maintain referencial integrity to allow the path to be re-adjusted as changes inevidably occur.
