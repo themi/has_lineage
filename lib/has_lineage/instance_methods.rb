@@ -57,10 +57,6 @@ module HasLineage
       update_column(self.class.send(:lineage_column_name).to_sym, value)
     end
 
-    def parent_key_changed?
-      send("#{self.class.send(:parent_column_name)}_changed?")
-    end
-
     def hierarchy_depth
       return 0 if lineage_path.nil?
       self.class.hierachy_depth_for(lineage_path)
