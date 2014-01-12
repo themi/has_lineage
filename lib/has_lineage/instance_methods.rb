@@ -50,15 +50,15 @@ module HasLineage
     end
 
     def lineage_path
-      send(has_lineage_options[:lineage_column])
+      send(self.class.send(:lineage_column_name))
     end
 
     def lineage_path=(value)
-      update_column(has_lineage_options[:lineage_column].to_sym, value)
+      update_column(self.class.send(:lineage_column_name).to_sym, value)
     end
 
     def parent_key_changed?
-      send("#{has_lineage_options[:parent_key_column]}_changed?")
+      send("#{self.class.send(:parent_column_name)}_changed?")
     end
 
     def hierarchy_depth
@@ -73,7 +73,7 @@ module HasLineage
       dest_parent_id = dest_parent.id
       old_parent_id = lineage_parent.id
 
-      reparent_me(dest_parent)
+      update_key_attributes(dest_parent)
 
       self.class.find(old_parent_id).update_child_paths_recursive
       self.class.find(dest_parent_id).update_child_paths_recursive
@@ -84,24 +84,24 @@ module HasLineage
     # =====
 
       def lineage_tree_id
-        send(has_lineage_options[:tree_key_column]) if has_lineage_options[:tree_key_column].present?
+        send(self.class.send(:tree_column_name)) if self.class.send(:tree_column_name).present?
       end
 
     # =====
     private
     # =====
 
-    def ok_to_move_to?(dest_parent)
-      raise MoveException.new("Cannot move root node!") unless parent?
-      raise MoveException.new("Cannot move to another tree!") if lineage_tree_id != dest_parent.lineage_tree_id
-      raise MoveException.new("Cannot move to a descendant node!") if dest_parent.lineage_path.starts_with?(lineage_path)
-    end
+      def ok_to_move_to?(dest_parent)
+        raise MoveException.new("Cannot move root node!") unless parent?
+        raise MoveException.new("Cannot move to another tree!") if lineage_tree_id != dest_parent.lineage_tree_id
+        raise MoveException.new("Cannot move to a descendant node!") if dest_parent.lineage_path.starts_with?(lineage_path)
+      end
 
-    def reparent_me(dest_parent)
-      attribs = { :lineage_parent => dest_parent }
-      attribs.merge!({ has_lineage_options[:tree_key_column].to_sym => dest_parent.send(has_lineage_options[:tree_key_column]) }) if has_lineage_options[:tree_key_column]
-      update_attributes(attribs)
-    end
+      def update_key_attributes(dest_parent)
+        attribs = { :lineage_parent => dest_parent }
+        attribs.merge!({ self.class.send(:tree_column_name).to_sym => dest_parent.send(self.class.send(:tree_column_name)) }) if self.class.send(:tree_column_name).present?
+        update_attributes(attribs)
+      end
 
   end
 end
