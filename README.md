@@ -79,11 +79,11 @@ descendants      Returns direct and indirect children of the record, self is not
 ```
 
 ```
-children?                     are there any children for this record
-parent?                       is there a parent record for this record
-update_child_paths_recursive  reset the tree from the record's parent down to last descendant
-move_to(destination_parent)   move this record to another.  Also updates bothe source and 
-                              destination tress
+children?                   are there any children for this record
+parent?                     is there a parent record for this record
+reset_lineage_tree          reset the tree from the record's parent down to last descendant
+move_to(destination_parent) move this record to another.  Also updates bothe source and 
+                            destination tress
 ```
 
 ```

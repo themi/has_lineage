@@ -52,7 +52,7 @@ STRING_DATA
     after  { teardown_db }
 
     it "returns sql incl tree_id partition" do
-      expect( described_class.send(:hierarchy_bulk_update_sql) ).to eq(string_with)
+      expect( described_class.send(:reset_tree_pg) ).to eq(string_with)
     end
   end
 
@@ -61,7 +61,7 @@ STRING_DATA
     after  { teardown_db }
 
     it "returns sql excl tree_id partition" do
-      expect( described_class.send(:hierarchy_bulk_update_sql) ).to eq(string_without)
+      expect( described_class.send(:reset_tree_pg) ).to eq(string_without)
     end
   end
 end

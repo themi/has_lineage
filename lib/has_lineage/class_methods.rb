@@ -4,15 +4,15 @@ module HasLineage
   module LineageClassMethods
 
     def roots(tree_id = nil)
-      lineage_tree(tree_id).where("#{parent_column_name} IS NULL")
+      lineage_tree(tree_id).where(parent_column_name.to_sym => nil)
     end
 
     def root_for(path, tree_id = nil)
-      lineage_tree(tree_id).where("#{lineage_column_name} = ?", root_path_for(path)).first
+      lineage_tree(tree_id).where(lineage_column_name.to_sym => root_path_for(path)).first
     end
 
     def ancestors_for(path, tree_id = nil)
-      lineage_tree(tree_id).where("#{lineage_column_name} IN (?)", ancestor_array_for(path))
+      lineage_tree(tree_id).where(lineage_column_name.to_sym => ancestor_array_for(path))
     end
 
     def descendants_of(path, tree_id = nil)
@@ -42,12 +42,10 @@ module HasLineage
     def reset_lineage_tree(tree_id = nil, &block)
       yield if block_given?
 
-      distinct_tree_values(tree_id).each do |tree_id|
-        roots(tree_id).presort_order.each_with_index do |sibling, index|
-          prefix = sibling.send(tree_column_name) if tree_column_name.present?
-          sibling.lineage_path = new_lineage_path(prefix, index)
-          sibling.update_child_paths_recursive if sibling.children?
-        end
+      if connection.adapter_name =~ /postgresql/i
+        connection.execute reset_tree_pg
+      else 
+        reset_tree_recursive
       end
     end
 
@@ -70,6 +68,16 @@ module HasLineage
     def root_path_for(path)
       path_array = array_for(path)
       path_array[0] + path_pattern(path_array[1].to_i) 
+    end
+
+    def reset_tree_recursive(tree_id = nil)
+      distinct_tree_values(tree_id).each do |tree_id|
+        roots(tree_id).presort_order.each_with_index do |sibling, index|
+          prefix = sibling.send(tree_column_name) if tree_column_name.present?
+          sibling.lineage_path = new_lineage_path(prefix, index)
+          sibling.reset_lineage_tree if sibling.children?
+        end
+      end
     end
 
     def ancestor_array_for(path)

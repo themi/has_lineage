@@ -42,19 +42,12 @@ module HasLineage
       lineage_parent
     end
 
-    def update_child_paths_recursive(prefix = lineage_path)
-      lineage_children.lineage_tree(lineage_tree_id).presort_order.each_with_index do |sibling, index|
-        sibling.lineage_path = self.class.new_lineage_path(prefix, index)
-        sibling.update_child_paths_recursive if children?
-      end
-    end
-
     def lineage_path
-      send(self.class.send(:lineage_column_name))
+      send(lineage_column_name)
     end
 
     def lineage_path=(value)
-      update_column(self.class.send(:lineage_column_name).to_sym, value)
+      update_column(lineage_column_name.to_sym, value)
     end
 
     def hierarchy_depth
@@ -62,6 +55,10 @@ module HasLineage
       self.class.hierachy_depth_for(lineage_path)
     end
     alias :depth :hierarchy_depth
+
+    def reset_lineage_tree
+      reset_tree_recursive
+    end
 
     def move_to(dest_parent)
       ok_to_move_to?(dest_parent)
@@ -71,21 +68,38 @@ module HasLineage
 
       update_key_attributes(dest_parent)
 
-      self.class.find(old_parent_id).update_child_paths_recursive
-      self.class.find(dest_parent_id).update_child_paths_recursive
+      self.class.find(old_parent_id).reset_lineage_tree
+      self.class.find(dest_parent_id).reset_lineage_tree
     end
 
     # =====
     protected
     # =====
-
       def lineage_tree_id
-        send(self.class.send(:tree_column_name)) if self.class.send(:tree_column_name).present?
+        send(tree_column_name) if tree_column_name?
+      end
+
+      def reset_tree_recursive(prefix = lineage_path)
+        lineage_children.lineage_tree(lineage_tree_id).presort_order.each_with_index do |sibling, index|
+          sibling.lineage_path = self.class.new_lineage_path(prefix, index)
+          sibling.reset_tree_recursive if children?
+        end
       end
 
     # =====
     private
     # =====
+      def tree_column_name
+        self.class.send(:tree_column_name)
+      end
+
+      def lineage_column_name
+        self.class.send(:lineage_column_name)
+      end
+
+      def tree_column_name?
+        tree_column_name.present?
+      end
 
       def ok_to_move_to?(dest_parent)
         raise MoveException.new("Cannot move root node!") unless parent?
@@ -95,7 +109,7 @@ module HasLineage
 
       def update_key_attributes(dest_parent)
         attribs = { :lineage_parent => dest_parent }
-        attribs.merge!({ self.class.send(:tree_column_name).to_sym => dest_parent.send(self.class.send(:tree_column_name)) }) if self.class.send(:tree_column_name).present?
+        attribs.merge!({ tree_column_name.to_sym => dest_parent.send(tree_column_name) }) if tree_column_name?
         update_attributes(attribs)
       end
 
