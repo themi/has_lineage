@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 group :test do
   gem 'rspec'
   gem 'sqlite3'
-  gem 'pry-debugger'
+  gem 'byebug'
   gem 'coveralls', require: false
 end
 

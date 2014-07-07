@@ -12,7 +12,7 @@ describe Post, ".lineage_path" do
 
     after  { teardown_db }
 
-    it "sets correct lineage path for the tree" do
+    specify "sets correct lineage path for the tree" do
       expect(@b1[:harry].lineage_path).to eq("/0001") 
       expect(@b1[:mary].lineage_path).to eq("/0001/0001")
       expect(@b1[:john].lineage_path).to eq("/0001/0002")
@@ -35,7 +35,7 @@ describe Post, ".lineage_path" do
 
     after  { teardown_db }
 
-    it "sets correct lineage path for first tree" do
+    specify "sets correct lineage path for first tree" do
       expect(@b1[:harry].lineage_path).to eq("1/0001") 
       expect(@b1[:mary].lineage_path).to eq("1/0001/0001")
       expect(@b1[:john].lineage_path).to eq("1/0001/0002")
@@ -43,7 +43,7 @@ describe Post, ".lineage_path" do
       expect(@b1[:gina].lineage_path).to eq("1/0001/0002/0002")
     end
 
-    it "sets correct lineage path for second tree" do
+    specify "sets correct lineage path for second tree" do
       expect(@b2[:harry].lineage_path).to eq("2/0001") 
       expect(@b2[:mary].lineage_path).to eq("2/0001/0001")
       expect(@b2[:john].lineage_path).to eq("2/0001/0002")
@@ -51,7 +51,7 @@ describe Post, ".lineage_path" do
       expect(@b2[:gina].lineage_path).to eq("2/0001/0002/0002")
     end
 
-    it "sets correct lineage path for third tree" do
+    specify "sets correct lineage path for third tree" do
       expect(@b3[:harry].lineage_path).to eq("1/0002") 
       expect(@b3[:mary].lineage_path).to eq("1/0002/0001")
       expect(@b3[:john].lineage_path).to eq("1/0002/0002")

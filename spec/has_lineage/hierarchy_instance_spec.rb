@@ -11,19 +11,19 @@ describe Post, "Hierachy instance methods" do
     before { subject.stub(:lineage_path).and_return(path) }
     context "and 3 levels" do
       let(:path) { '/0001/0001/0001' }
-      its(:depth) {  should eq(3) }
+      specify {  expect(subject.depth).to eq(3) }
     end
     context "and a top level" do
       let(:path) { '/0001' }
-      its(:depth) {  should eq(1) }
+      specify {  expect(subject.depth).to eq(1) }
     end
     context "and a prefixed top level" do
       let(:path) { 'TREE/0001' }
-      its(:depth) {  should eq(1) }
+      specify {  expect(subject.depth).to eq(1) }
     end
     context "and a prefixed 4 level" do
       let(:path) { 'TREE/0001/0002/0003/0004' }
-      its(:depth) {  should eq(4) }
+      specify {  expect(subject.depth).to eq(4) }
     end
   end
 
@@ -37,7 +37,7 @@ describe Post, "Hierachy instance methods" do
       @b3.each { |k, v| v.reload }
     end
 
-    it "#root" do
+    specify "#root" do
       expect(@b1[:harry].root).to eq(@b1[:harry])
       expect(@b1[:mary].root).to eq(@b1[:harry])
       expect(@b1[:gina].root).to eq(@b1[:harry])
@@ -53,7 +53,7 @@ describe Post, "Hierachy instance methods" do
       expect(nil).to be_nil
     end
 
-    it "#ancestors" do
+    specify "#ancestors" do
       expect(@b1[:harry].ancestors).to be_empty
       expect(@b1[:mary].ancestors).to include(@b1[:harry])
       expect(@b1[:gina].ancestors).to include(@b1[:harry], @b1[:john])
@@ -67,7 +67,7 @@ describe Post, "Hierachy instance methods" do
       expect(@b3[:gina].ancestors).to include(@b3[:harry], @b3[:john])
     end
 
-    it "#descendants" do
+    specify "#descendants" do
       expect(@b1[:harry].descendants).to include(@b1[:mary], @b1[:john], @b1[:larry], @b1[:gina])
       expect(@b1[:mary].descendants).to be_empty
       expect(@b1[:john].descendants).to include(@b1[:larry], @b1[:gina])
@@ -84,7 +84,7 @@ describe Post, "Hierachy instance methods" do
       expect(@b3[:larry].descendants).to be_empty
     end
 
-    it "#siblings" do
+    specify "#siblings" do
       paul = Post.create(:name => "Paul_4", tree_id: 4)
 
       expect(@b1[:harry].siblings.count).to eq(1)
@@ -96,25 +96,25 @@ describe Post, "Hierachy instance methods" do
       expect(paul.siblings).to be_empty
     end
 
-    it "#children" do
+    specify "#children" do
       expect(@b1[:harry].children).to include(@b1[:mary], @b1[:john], @b1[:jane])
       expect(@b1[:harry].children.count).to eq(3)
       expect(@b1[:mary].children).to eq([])
     end
 
-    it "#children?" do
-      expect(@b1[:harry].children?).to be_true
-      expect(@b1[:mary].children?).to be_false
+    specify "#children?" do
+      expect(@b1[:harry].children?).to eq true
+      expect(@b1[:mary].children?).to eq false
     end
 
-    it "#parent" do
+    specify "#parent" do
       expect(@b1[:harry].parent).to be_nil
       expect(@b1[:mary].parent).to eq(@b1[:harry])
     end
 
-    it "#parent?" do
-      expect(@b1[:harry].parent?).to be_false
-      expect(@b1[:mary].parent?).to be_true
+    specify "#parent?" do
+      expect(@b1[:harry].parent?).to eq false
+      expect(@b1[:mary].parent?).to eq true
     end
 
   end

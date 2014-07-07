@@ -5,5 +5,5 @@ $: << File.join(APP_ROOT, 'lib')
 require 'coveralls'
 Coveralls.wear!
 
-require 'pry-debugger'
+require 'byebug'
 require 'has_lineage'

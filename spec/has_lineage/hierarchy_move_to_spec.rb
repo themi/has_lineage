@@ -13,23 +13,23 @@ describe Post, "#move_to" do
       @b2.each { |k, v| v.reload }
     end
 
-    it "with root node raises MoveException" do
+    specify "with root node raises MoveException" do
       expect { @b1[:harry].move_to(@b2[:harry]) }.to raise_error(HasLineage::MoveException, "Cannot move root node!")
     end
 
-    it "With another tree node raise MoveException" do
+    specify "With another tree node raise MoveException" do
       expect { @b1[:mary].move_to(@b2[:john]) }.to raise_error(HasLineage::MoveException, "Cannot move to another tree!")
     end
 
-    it "with decendant node raises MoveException" do
+    specify "with decendant node raises MoveException" do
       expect { @b1[:john].move_to(@b1[:gina]) }.to raise_error(HasLineage::MoveException, "Cannot move to a descendant node!")
     end
 
-    it "with acceptable branch node doesnot reaise error " do
+    specify "with acceptable branch node doesnot reaise error " do
       expect { @b1[:mary].move_to(@b1[:john]) }.to_not raise_error
     end
 
-    it "with acceptable branch node updates the paths" do
+    specify "with acceptable branch node updates the paths" do
       expect( @b1[:john].lineage_path ).to eq("1/0001/0002")
       expect( @b1[:jane].lineage_path ).to eq("1/0001/0001")
 
