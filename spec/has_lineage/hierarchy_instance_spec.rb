@@ -8,7 +8,7 @@ describe Post, "Hierachy instance methods" do
 
   context "with an instance" do
     subject { described_class.new }
-    before { subject.stub(:lineage_path).and_return(path) }
+    before { expect(subject).to receive(:lineage_path).twice { path } }
     context "and 3 levels" do
       let(:path) { '/0001/0001/0001' }
       specify {  expect(subject.depth).to eq(3) }
